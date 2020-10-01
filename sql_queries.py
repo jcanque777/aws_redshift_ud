@@ -115,16 +115,16 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time
 
 # STAGING TABLES
 
-staging_events_copy = ("""COPY staging_events FROM '{}'
+staging_events_copy = ("""COPY staging_events FROM {}
     credentials 'aws_iam_role={}'
     region 'us-west-2'
     compupdate off
-    JSON '{}'
+    format as JSON {}
     """).format(config.get('S3', 'LOG_DATA'),
-               (config.get('IAM_ROLE', 'ARN'),
-               (config.get('S3', 'LOG_JSONPATH'))
+                   config.get('IAM_ROLE', 'ARN'),
+                   config.get('S3', 'LOG_JSONPATH'))
 
-staging_songs_copy = ("""COPY staging_songs from '{}'
+staging_songs_copy = ("""COPY staging_songs from {}
     credentials 'aws_iam_role={}'
     region 'us-west-2'
     compupdate off
