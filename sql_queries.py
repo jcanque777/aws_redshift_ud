@@ -133,11 +133,6 @@ staging_songs_copy = ("""COPY staging_songs from '{}'
                config.get('IAM_ROLE', 'ARN'))
 
 # FINAL TABLES
-
-
-                
-                
-                
                 
 songplay_table_insert = ("""INSERT INTO songplay 
                             (
@@ -163,40 +158,6 @@ songplay_table_insert = ("""INSERT INTO songplay
                             FROM staging_events e, staging_songs s
                             WHERE e.page='NextSong' AND e.song=s.title
                             """)
-
-  """
-    e(
-    event_id INT IDENTITY(0,1) PRIMARY KEY,
-    artist VARCHAR,
-    auth VARCHAR NOT NULL,
-    firstName VARCHAR,
-    gender CHAR(1),
-    itemInSession INT NOT NULL,
-    lastName VARCHAR,
-    length NUMERIC,
-    level VARCHAR NOT NULL,
-    location VARCHAR,
-    method VARCHAR NOT NULL,
-    page VARCHAR NOT NULL,
-    registration NUMERIC,
-    sessionId INT NOT NULL,
-    song VARCHAR,
-    status INT NOT NULL,
-    ts NUMERIC NOT NULL,
-    userAgent VARCHAR,
-    userId INT
-
-    S
-    song_id VARCHAR PRIMARY KEY,
-    num_songs INT NOT NULL,
-    artist_id VARCHAR NOT NULL,
-    artist_latitude VARCHAR,
-    artist_longitude NUMERIC,
-    artist_location NUMERIC,
-    artist_name VARCHAR NOT NULL,
-    title VARCHAR NOT NULL,
-    duration NUMERIC NOT NULL,
-    year INT NOT NULL"""
                 
 user_table_insert = ("""INSERT INTO users 
                                     (user_id, first_name, last_name, gender,level)
