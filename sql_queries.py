@@ -21,21 +21,21 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
 (
     event_id INT IDENTITY(0,1) PRIMARY KEY,
     artist VARCHAR,
-    auth VARCHAR NOT NULL,
+    auth VARCHAR,
     firstName VARCHAR,
     gender CHAR(1),
-    itemInSession INT NOT NULL,
+    itemInSession INT,
     lastName VARCHAR,
     length NUMERIC,
-    level VARCHAR NOT NULL,
+    level VARCHAR,
     location VARCHAR,
-    method VARCHAR NOT NULL,
-    page VARCHAR NOT NULL,
+    method VARCHAR,
+    page VARCHAR,
     registration NUMERIC,
-    sessionId INT NOT NULL,
+    sessionId INT,
     song VARCHAR,
-    status INT NOT NULL,
-    ts NUMERIC NOT NULL,
+    status INT,
+    ts NUMERIC,
     userAgent VARCHAR,
     userId INT
 );
@@ -44,23 +44,23 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
 staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
 (
     song_id VARCHAR PRIMARY KEY,
-    num_songs INT NOT NULL,
-    artist_id VARCHAR NOT NULL,
+    num_songs INT,
+    artist_id VARCHAR,
     artist_latitude VARCHAR,
     artist_longitude NUMERIC,
     artist_location NUMERIC,
-    artist_name VARCHAR NOT NULL,
-    title VARCHAR NOT NULL,
-    duration NUMERIC NOT NULL,
-    year INT NOT NULL
+    artist_name VARCHAR,
+    title VARCHAR,
+    duration NUMERIC,
+    year INT
 );
 """)
 
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays
 (
     songplay_id INT IDENTITY(0,1) PRIMARY KEY,
-    start_time TIMESTAMP NOT NULL,
-    user_id INT NOT NULL,
+    start_time TIMESTAMP,
+    user_id INT,
     level VARCHAR,
     song_id VARCHAR,
     artist_id VARCHAR,
@@ -84,17 +84,17 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS users
 song_table_create = ("""CREATE TABLE IF NOT EXISTS songs
 (
     song_id VARCHAR PRIMARY KEY,
-    title VARCHAR NOT NULL,
-    artist_id VARCHAR NOT NULL,
+    title VARCHAR,
+    artist_id VARCHAR,
     year INT,
-    duration NUMERIC NOT NULL
+    duration NUMERIC
 );
 """)
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists
 (
     artist_id VARCHAR PRIMARY KEY,
-    name VARCHAR NOT NULL,
+    name VARCHAR,
     location VARCHAR,
     latitude NUMERIC,
     longitude NUMERIC
@@ -104,12 +104,12 @@ artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists
 time_table_create = ("""CREATE TABLE IF NOT EXISTS time
 (
     start_time TIMESTAMP PRIMARY KEY,
-    hour INT NOT NULL,
-    day INT NOT NULL,
-    week INT NOT NULL,
-    month INT NOT NULL,
-    year INT NOT NULL,
-    weekday INT NOT NULL
+    hour INT,
+    day INT,
+    week INT,
+    month INT,
+    year INT,
+    weekday INT
 );
 """)
 
@@ -163,25 +163,25 @@ user_table_insert = ("""INSERT INTO users
                                     (user_id, first_name, last_name, gender,level)
                         SELECT DISTICT userId, firstName, lastName, gender, level
                         FROM staging_events
-                        WHERE userId IS NOT NULL
+                        WHERE userId IS
 """)
 
 song_table_insert = ("""INSERT INTO songs
                                     (song_id, title, artist_id, year, duration)
                         SELECT DISTINCT song_id, title, artist_id, year, duration
                         FROM staging_songs
-                        WHERE song_id IS NOT NULL
+                        WHERE song_id IS
 """)
 
 artist_table_insert = ("""INSERT INTO artists
                                     (artist_id, name, location, latitude, longitude)
                           SELECT DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
                           FROM staging_songs
-                          WHERE artist_id IS NOT NULL
+                          WHERE artist_id IS
 """)
 
 time_table_insert = ("""INSERT INTO time
-                                    (start_time, hour,day, week, month, year, weekday)
+                                    (start_time, hour, day, week, month, year, weekday)
                         SELECT DISTINCT ts,
                                         extract (hour from ts),
                                         extract (day from ts),
