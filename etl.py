@@ -5,7 +5,7 @@ from sql_queries import copy_table_queries, insert_table_queries
 
 def load_staging_tables(cur, conn):
     """
-    Read annd load JSON Files from S3 into staging_events and staging_songs
+    Reads and copies JSON Files from S3 into staging_events and staging_songs
     """
     for query in copy_table_queries:
         cur.execute(query)
@@ -13,12 +13,20 @@ def load_staging_tables(cur, conn):
 
 
 def insert_tables(cur, conn):
+    """
+    Inserts from S3 bucket into the staging tables
+    """
     for query in insert_table_queries:
         cur.execute(query)
         conn.commit()
 
 
 def main():
+    """
+    Reads and loads information from config file
+    Connects to db using config file info
+    Gets info from S3 and copies onto table
+    """
     config = configparser.ConfigParser()
     config.read('dwh.cfg')
 
