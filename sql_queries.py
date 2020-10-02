@@ -35,7 +35,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
     sessionId INT,
     song VARCHAR,
     status INT,
-    ts NUMERIC,
+    ts TIMESTAMP,
     userAgent VARCHAR,
     userId INT
 );
@@ -181,7 +181,7 @@ artist_table_insert = ("""INSERT INTO artists
 
 time_table_insert = ("""INSERT INTO time
                                     (start_time, hour, day, week, month, year, weekday)
-                        SELECT DISTINCT TIMESTAMP 'epoch' + e.ts/1000 * INTERVAL '1 second' AS start_time, 
+                        SELECT DISTINCT ts AS start_time, 
                             extract(h from start_time) as hour, 
                             extract(d from start_time) as day,
                             extract(w from start_time) as week,
