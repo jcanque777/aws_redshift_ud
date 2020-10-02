@@ -159,28 +159,57 @@ songplay_table_insert = ("""INSERT INTO songplays
                             ;""")
                 
 user_table_insert = ("""INSERT INTO users
-                                    (user_id, first_name, last_name, gender, level)
-                        SELECT DISTINCT userId, firstName, lastName, gender, level
+                                    (user_id,
+                                    first_name,
+                                    last_name,
+                                    gender,
+                                    level)
+                        SELECT DISTINCT userId, 
+                                    firstName,
+                                    lastName,
+                                    gender,
+                                    level
                         FROM staging_events
                         WHERE userId IS NOT NULL
                         ;""")
 
 song_table_insert = ("""INSERT INTO songs
-                                    (song_id, title, artist_id, year, duration)
-                        SELECT DISTINCT song_id, title, artist_id, year, duration
+                                    (song_id,
+                                    title,
+                                    artist_id,
+                                    year,
+                                    duration)
+                        SELECT DISTINCT song_id, 
+                                    title,
+                                    artist_id,
+                                    year,
+                                    duration
                         FROM staging_songs
                         WHERE song_id IS NOT NULL
                         ;""")
 
 artist_table_insert = ("""INSERT INTO artists
-                                    (artist_id, name, location, latitude, longitude)
-                          SELECT DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
+                                    (artist_id,
+                                    name,
+                                    location,
+                                    latitude,
+                                    longitude)
+                          SELECT DISTINCT artist_id, 
+                                    artist_name,
+                                    artist_location,
+                                    artist_latitude,
+                                    artist_longitude
                           FROM staging_songs
                           WHERE artist_id IS NOT NULL
                           ;""")
 
 time_table_insert = ("""INSERT INTO time
-                                    (start_time, hour, day, week, month, year)
+                                    (start_time, 
+                                    hour,
+                                    day,
+                                    week,
+                                    month,
+                                    year)
                         SELECT DISTINCT start_time, 
                             extract(h from start_time) as hour, 
                             extract(d from start_time) as day,
