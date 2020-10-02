@@ -72,7 +72,7 @@ songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays
 
 user_table_create = ("""CREATE TABLE IF NOT EXISTS users
 (
-    user_id VARCHAR PRIMARY KEY,
+    user_id INT PRIMARY KEY,
     first_name VARCHAR,
     last_name VARCHAR,
     gender VARCHAR,
