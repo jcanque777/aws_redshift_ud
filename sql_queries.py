@@ -180,15 +180,14 @@ artist_table_insert = ("""INSERT INTO artists
                           LIMIT 10;""")
 
 time_table_insert = ("""INSERT INTO time
-                                    (start_time, hour, day, week, month, year, weekday)
+                                    (start_time, hour, day, week, month, year)
                         SELECT DISTINCT ts AS start_time, 
                             extract(h from start_time) as hour, 
                             extract(d from start_time) as day,
                             extract(w from start_time) as week,
                             extract(mon from start_time) as month,
-                            extract(y from start_time) as year,
-                            extract(weekday from start_time) as weekday
-                        FROM staging_events e
+                            extract(y from start_time) as year
+                        FROM staging_events
                         LIMIT 10;""")
 
 # QUERY LISTS
