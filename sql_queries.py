@@ -35,7 +35,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
     sessionId INT,
     song VARCHAR,
     status INT,
-    ts NUMERIC,
+    ts TIMESTAMP,
     userAgent VARCHAR,
     userId INT
 );
@@ -46,7 +46,7 @@ staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
     song_id VARCHAR PRIMARY KEY,
     num_songs INT,
     artist_id VARCHAR,
-    artist_latitude NUMERIC,
+    artist_latitude VARCHAR,
     artist_longitude NUMERIC,
     artist_location VARCHAR,
     artist_name VARCHAR,
@@ -154,38 +154,43 @@ songplay_table_insert = ("""INSERT INTO songplays
                                 s.artist_id,
                                 e.sessionId,
                                 e.location,
-                                u.userAgent
+                                e.userAgent
                             FROM staging_events e, staging_songs s
-                            WHERE e.page='NextSong' AND e.song=s.title;""")
+                            WHERE e.page='NextSong' AND e.song=s.title
+                            LIMIT 10;""")
                 
 user_table_insert = ("""INSERT INTO users
                                     (user_id, first_name, last_name, gender, level)
-                        SELECT DISTICT userId, firstName, lastName, gender, level
+                        SELECT DISTINCT userId, firstName, lastName, gender, level
                         FROM staging_events
-                        WHERE userId IS NOT NULL;""")
+                        WHERE userId IS NOT NULL
+                        LIMIT 10;""")
 
 song_table_insert = ("""INSERT INTO songs
                                     (song_id, title, artist_id, year, duration)
                         SELECT DISTINCT song_id, title, artist_id, year, duration
                         FROM staging_songs
-                        WHERE song_id IS NOT NULL;""")
+                        WHERE song_id IS NOT NULL
+                        LIMIT 10;""")
 
 artist_table_insert = ("""INSERT INTO artists
                                     (artist_id, name, location, latitude, longitude)
                           SELECT DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
                           FROM staging_songs
-                          WHERE artist_id IS NOT NULL;""")
+                          WHERE artist_id IS NOT NULL
+                          LIMIT 10;""")
 
 time_table_insert = ("""INSERT INTO time
                                     (start_time, hour, day, week, month, year, weekday)
-                        SELECT DISTINCT ts,
-                                        extract (hour from ts),
-                                        extract (day from ts),
-                                        extract (week from ts),
-                                        extract (month from ts),
-                                        extract (year from ts),
-                                        extract (weekday from ts)
-                        FROM staging_events;""")
+                        SELECT DISTINCT TIMESTAMP 'epoch' + e.ts/1000 * INTERVAL '1 second' AS start_time, 
+                            extract(h from start_time) as hour, 
+                            extract(d from start_time) as day,
+                            extract(w from start_time) as week,
+                            extract(mon from start_time) as month,
+                            extract(y from start_time) as year,
+                            extract(weekday from start_time) as weekday
+                        FROM staging_events e
+                        LIMIT 10;""")
 
 # QUERY LISTS
 
