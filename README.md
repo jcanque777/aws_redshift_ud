@@ -1,6 +1,4 @@
-# aws_redshift_ud
-
-# Udacity Data Engineering: Sparkify Project
+# Sparkify Project: Create Data Warehouse in Amazon Redshift
 
 - Data modeling with Postgres and building an ETL pipeline using Python. 
 
@@ -9,7 +7,7 @@
 
 Sparkify is a music company that has gone through a lot of growth and now wants to move their processes and data onto the cloud. They have already uploaded all their data to an S3 bucket which is split into user activity as well as metadata on songs. 
 
-I created an ETL pipeline that takes this raw data from S3, stages them in AWS Redshift, and then create the fact and dimension tables. 
+I created an ETL pipeline that takes this raw data from S3, stages them in Amazon Redshift, and then create the fact and dimension tables. 
 
 
 ## Schema
@@ -44,4 +42,4 @@ In etl.py, we log into the S3 database using our config file. We then create a s
 
 
 ## Conclusion
-The project was a great way to navigate the AWS Redshift and S3. The creation of staging tables allows raw data to be converted to the right formats for insertion into database tables. Sparkify can now grow data, save onto S3, and update their tables as quick as they prefer through AWS infrastructure. Analysts can now pull pull data directly from Redshift.
+The project was a great way to navigate the Amazon Redshift and S3. The creation of staging tables allows raw data to be converted to the right formats for insertion into database tables. Sparkify can now grow data, save onto S3, and update their tables as quick as they prefer through AWS infrastructure. Analysts can now pull pull data directly from Redshift.
