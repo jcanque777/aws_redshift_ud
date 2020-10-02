@@ -187,8 +187,8 @@ time_table_insert = ("""INSERT INTO time
                             extract(w from start_time) as week,
                             extract(mon from start_time) as month,
                             extract(y from start_time) as year
-                        FROM (SELECT timestamp 'epoch' + e.ts/1000 *
-                                    interval '1 second' AS start_time)
+                        FROM (SELECT DISTINCT timestamp 'epoch' + e.ts/1000 * interval '1 second' AS start_time
+                                FROM staging_events e)
                         LIMIT 10;""")
 
 # QUERY LISTS
