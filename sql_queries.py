@@ -35,7 +35,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
     sessionId INT,
     song VARCHAR,
     status INT,
-    ts TIMESTAMP,
+    ts INT,
     userAgent VARCHAR,
     userId INT
 );
@@ -145,8 +145,8 @@ songplay_table_insert = ("""INSERT INTO songplays
                             location,
                             user_agent
                             )
-                            SELECT DISTINCT s.song_id,
-                                e.ts,
+                            SELECT DISTINCT timestamp 'epoch' + e.ts/1000 *
+                                    interval '1 second' AS start_time,
                                 e.userId,
                                 e.level,
                                 s.song_id,
@@ -181,13 +181,14 @@ artist_table_insert = ("""INSERT INTO artists
 
 time_table_insert = ("""INSERT INTO time
                                     (start_time, hour, day, week, month, year)
-                        SELECT DISTINCT ts AS start_time, 
+                        SELECT DISTINCT start_time, 
                             extract(h from start_time) as hour, 
                             extract(d from start_time) as day,
                             extract(w from start_time) as week,
                             extract(mon from start_time) as month,
                             extract(y from start_time) as year
-                        FROM staging_events
+                        FROM (SELECT timestamp 'epoch' + e.ts/1000 *
+                                    interval '1 second' AS start_time)
                         LIMIT 10;""")
 
 # QUERY LISTS
