@@ -23,7 +23,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
     artist VARCHAR,
     auth VARCHAR,
     firstName VARCHAR,
-    gender CHAR(1),
+    gender VARCHAR,
     itemInSession INT,
     lastName VARCHAR,
     length NUMERIC,
