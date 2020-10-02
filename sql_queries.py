@@ -48,7 +48,7 @@ staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
     artist_id VARCHAR,
     artist_latitude VARCHAR,
     artist_longitude NUMERIC,
-    artist_location NUMERIC,
+    artist_location VARCHAR,
     artist_name VARCHAR,
     title VARCHAR,
     duration NUMERIC,
@@ -134,7 +134,7 @@ staging_songs_copy = ("""COPY staging_songs from {}
 
 # FINAL TABLES
                 
-songplay_table_insert = ("""INSERT INTO songplay 
+songplay_table_insert = ("""INSERT INTO songplays
                             (
                             songplay_id,
                             start_time,
