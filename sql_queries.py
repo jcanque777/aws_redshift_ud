@@ -35,7 +35,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
     sessionId INT,
     song VARCHAR,
     status INT,
-    ts INT,
+    ts BIGINT,
     userAgent VARCHAR,
     userId INT
 );
