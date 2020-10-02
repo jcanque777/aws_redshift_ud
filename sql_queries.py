@@ -136,7 +136,6 @@ staging_songs_copy = ("""copy staging_songs from {}
                 
 songplay_table_insert = ("""INSERT INTO songplays
                             (
-                            songplay_id,
                             start_time,
                             user_id,
                             level,
