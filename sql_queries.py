@@ -46,7 +46,7 @@ staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
     song_id VARCHAR PRIMARY KEY,
     num_songs INT,
     artist_id VARCHAR,
-    artist_latitude VARCHAR,
+    artist_latitude NUMERIC,
     artist_longitude NUMERIC,
     artist_location VARCHAR,
     artist_name VARCHAR,
@@ -115,7 +115,7 @@ time_table_create = ("""CREATE TABLE IF NOT EXISTS time
 
 # STAGING TABLES
 
-staging_events_copy = ("""COPY staging_events FROM {}
+staging_events_copy = ("""copy staging_events from {}
     credentials 'aws_iam_role={}'
     region 'us-west-2'
     compupdate off
@@ -124,7 +124,7 @@ staging_events_copy = ("""COPY staging_events FROM {}
                    config.get('IAM_ROLE', 'ARN'),
                    config.get('S3', 'LOG_JSONPATH'))
 
-staging_songs_copy = ("""COPY staging_songs from {}
+staging_songs_copy = ("""copy staging_songs from {}
     credentials 'aws_iam_role={}'
     region 'us-west-2'
     compupdate off
@@ -156,29 +156,25 @@ songplay_table_insert = ("""INSERT INTO songplays
                                 e.location,
                                 u.userAgent
                             FROM staging_events e, staging_songs s
-                            WHERE e.page='NextSong' AND e.song=s.title
-                            """)
+                            WHERE e.page='NextSong' AND e.song=s.title;""")
                 
-user_table_insert = ("""INSERT INTO users 
-                                    (user_id, first_name, last_name, gender,level)
+user_table_insert = ("""INSERT INTO users
+                                    (user_id, first_name, last_name, gender, level)
                         SELECT DISTICT userId, firstName, lastName, gender, level
                         FROM staging_events
-                        WHERE userId IS
-""")
+                        WHERE userId IS NOT NULL;""")
 
 song_table_insert = ("""INSERT INTO songs
                                     (song_id, title, artist_id, year, duration)
                         SELECT DISTINCT song_id, title, artist_id, year, duration
                         FROM staging_songs
-                        WHERE song_id IS
-""")
+                        WHERE song_id IS NOT NULL;""")
 
 artist_table_insert = ("""INSERT INTO artists
                                     (artist_id, name, location, latitude, longitude)
                           SELECT DISTINCT artist_id, artist_name, artist_location, artist_latitude, artist_longitude
                           FROM staging_songs
-                          WHERE artist_id IS
-""")
+                          WHERE artist_id IS NOT NULL;""")
 
 time_table_insert = ("""INSERT INTO time
                                     (start_time, hour, day, week, month, year, weekday)
@@ -189,8 +185,7 @@ time_table_insert = ("""INSERT INTO time
                                         extract (month from ts),
                                         extract (year from ts),
                                         extract (weekday from ts)
-                        FROM staging_events                                    
-""")
+                        FROM staging_events;""")
 
 # QUERY LISTS
 
