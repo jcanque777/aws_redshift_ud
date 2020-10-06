@@ -19,7 +19,7 @@ time_table_drop = "DROP TABLE IF EXISTS time"
 
 staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
 (
-    event_id INT IDENTITY(0,1) PRIMARY KEY,
+    event_id INT IDENTITY(0,1),
     artist VARCHAR,
     auth VARCHAR,
     firstName VARCHAR,
@@ -43,7 +43,7 @@ staging_events_table_create= ("""CREATE TABLE IF NOT EXISTS staging_events
 
 staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
 (
-    song_id VARCHAR PRIMARY KEY,
+    song_id VARCHAR,
     num_songs INT,
     artist_id VARCHAR,
     artist_latitude NUMERIC,
@@ -58,7 +58,7 @@ staging_songs_table_create = ("""CREATE TABLE IF NOT EXISTS staging_songs
 
 songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays
 (
-    songplay_id INT IDENTITY(0,1) PRIMARY KEY,
+    songplay_id INT IDENTITY(0,1),
     start_time TIMESTAMP,
     user_id INT,
     level VARCHAR,
@@ -72,7 +72,7 @@ songplay_table_create = ("""CREATE TABLE IF NOT EXISTS songplays
 
 user_table_create = ("""CREATE TABLE IF NOT EXISTS users
 (
-    user_id INT PRIMARY KEY,
+    user_id INT,
     first_name VARCHAR,
     last_name VARCHAR,
     gender VARCHAR,
@@ -83,7 +83,7 @@ user_table_create = ("""CREATE TABLE IF NOT EXISTS users
 
 song_table_create = ("""CREATE TABLE IF NOT EXISTS songs
 (
-    song_id VARCHAR PRIMARY KEY,
+    song_id VARCHAR,
     title VARCHAR,
     artist_id VARCHAR,
     year INT,
@@ -93,7 +93,7 @@ song_table_create = ("""CREATE TABLE IF NOT EXISTS songs
 
 artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists
 (
-    artist_id VARCHAR PRIMARY KEY,
+    artist_id VARCHAR,
     name VARCHAR,
     location VARCHAR,
     latitude NUMERIC,
@@ -103,7 +103,7 @@ artist_table_create = ("""CREATE TABLE IF NOT EXISTS artists
 
 time_table_create = ("""CREATE TABLE IF NOT EXISTS time
 (
-    start_time TIMESTAMP PRIMARY KEY,
+    start_time TIMESTAMP,
     hour INT,
     day INT,
     week INT,
