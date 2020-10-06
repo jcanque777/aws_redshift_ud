@@ -155,12 +155,11 @@ songplay_table_insert = ("""INSERT INTO songplays
                                 e.location,
                                 e.userAgent
                             FROM staging_events e
-                            LEFT JOIN staging_songs s
-                            ON (e.artist = s.artist_id
-                            AND e.song = s.song_id
-                            AND e.ts = s.duration)
-                            WHERE e.page='NextSong' AND e.song=s.title
-                            LIMIT 5
+                            JOIN staging_songs s
+                            ON (e.artist = s.artist_name
+                            AND e.song = s.title
+                            AND e.length = s.duration)
+                            WHERE e.page='NextSong'
                             ;""")
                 
 user_table_insert = ("""INSERT INTO users
@@ -191,7 +190,6 @@ song_table_insert = ("""INSERT INTO songs
                                     duration
                         FROM staging_songs
                         WHERE song_id IS NOT NULL
-                        LIMIT 5
                         ;""")
 
 artist_table_insert = ("""INSERT INTO artists
@@ -207,7 +205,6 @@ artist_table_insert = ("""INSERT INTO artists
                                     artist_longitude
                           FROM staging_songs
                           WHERE artist_id IS NOT NULL
-                          LIMIT 5
                           ;""")
 
 time_table_insert = ("""INSERT INTO time
@@ -225,7 +222,6 @@ time_table_insert = ("""INSERT INTO time
                             extract(y from start_time) as year
                         FROM (SELECT DISTINCT timestamp 'epoch' + e.ts/1000 * interval '1 second' AS start_time
                                 FROM staging_events e)
-                        LIMIT 5
                         ;""")
 
 # QUERY LISTS
